@@ -1,0 +1,50 @@
+import { ExpenseReport } from '../../../../types';
+
+export const mockExpenseReports: ExpenseReport[] = [
+  {
+    id: 'nf-1',
+    collaboratorName: 'Clara Petit',
+    category: 'Hôtel',
+    amount: 250.00,
+    status: 'Approuvée',
+    creationDate: '2024-07-17',
+    period: 'août 2024',
+  },
+  {
+    id: 'nf-2',
+    collaboratorName: 'Sophie Martin',
+    category: 'Transport',
+    amount: 120.00,
+    status: 'À valider',
+    creationDate: '2024-07-16',
+    period: 'juillet 2024',
+  },
+  {
+    id: 'nf-3',
+    collaboratorName: 'Luc Bernard',
+    category: 'Restaurant',
+    amount: 75.50,
+    status: 'À valider',
+    creationDate: '2024-07-15',
+    period: 'juillet 2024',
+  },
+  {
+    id: 'nf-4',
+    collaboratorName: 'Alex Dubois',
+    category: 'Autre',
+    amount: 45.20,
+    status: 'Remboursée',
+    creationDate: '2024-07-13',
+    period: 'juillet 2024',
+    reimbursementDate: '2024-07-20',
+  },
+  {
+    id: 'nf-5',
+    collaboratorName: 'Julien Petit',
+    category: 'Fournitures',
+    amount: 32.80,
+    status: 'Rejetée',
+    creationDate: '2024-07-12',
+    period: 'juillet 2024',
+  },
+];

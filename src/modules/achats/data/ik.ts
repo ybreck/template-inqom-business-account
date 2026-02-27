@@ -1,0 +1,45 @@
+import { MileageAllowance } from '../../../../types';
+
+export const mockMileageAllowances: MileageAllowance[] = [
+  {
+    id: 'ik-1',
+    collaboratorName: 'Luc Bernard',
+    reason: 'Visite client - Lyon',
+    amount: 203.00,
+    distance: 350,
+    status: 'À valider',
+    creationDate: '2024-07-18',
+    travelDate: '2024-07-17',
+  },
+  {
+    id: 'ik-2',
+    collaboratorName: 'Alex Dubois',
+    reason: 'Formation interne',
+    amount: 29.00,
+    distance: 50,
+    status: 'Approuvée',
+    creationDate: '2024-07-14',
+    travelDate: '2024-07-12',
+  },
+  {
+    id: 'ik-3',
+    collaboratorName: 'Sophie Martin',
+    reason: 'Salon professionnel',
+    amount: 69.60,
+    distance: 120,
+    status: 'Remboursée',
+    creationDate: '2024-07-10',
+    travelDate: '2024-07-09',
+    reimbursementDate: '2024-07-19',
+  },
+  {
+    id: 'ik-4',
+    collaboratorName: 'Julien Petit',
+    reason: 'Rendez-vous prospect',
+    amount: 46.40,
+    distance: 80,
+    status: 'Rejetée', 
+    creationDate: '2024-07-15',
+    travelDate: '2024-07-14',
+  },
+];
