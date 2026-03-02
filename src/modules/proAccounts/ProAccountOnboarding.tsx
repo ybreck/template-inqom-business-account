@@ -26,11 +26,11 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
 
   const flow = [
     { id: 'intro' },
+    { id: 'email', title: 'Identification', icon: EnvelopeIcon },
     { id: 'org', title: 'Organisation', icon: DocumentTextIcon },
     { id: 'ubo', title: 'Titularité', icon: UserGroupIcon },
-    ...(requiresDocs ? [{ id: 'docs', title: 'Documents', icon: FolderPlusIcon }] : []),
-    { id: 'email', title: 'Email', icon: EnvelopeIcon },
-    { id: 'id', title: 'Identification', icon: InformationCircleIcon },
+    { id: 'docs', title: 'Documents', icon: FolderPlusIcon },
+    { id: 'id', title: 'Vérification', icon: InformationCircleIcon },
     { id: 'kyc' }
   ];
 
@@ -109,20 +109,6 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
       <h2 className="text-2xl font-semibold text-slate-900 mb-6">Informations de l'organisation</h2>
 
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
-        <div className="mb-8">
-          <label className="block text-sm font-medium text-slate-700 mb-3">Êtes-vous un représentant légal ?</label>
-          <div className="flex gap-8">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="legalRep" className="w-4 h-4 text-theme-primary-600 focus:ring-theme-primary-500" defaultChecked />
-              <span className="text-slate-700">Oui</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="radio" name="legalRep" className="w-4 h-4 text-theme-primary-600 focus:ring-theme-primary-500" />
-              <span className="text-slate-700">Non, mais j'ai une procuration</span>
-            </label>
-          </div>
-        </div>
-
         <div className="mb-8">
           <label className="block text-sm font-medium text-slate-700 mb-3">
             De quel type d'organisation s'agit-il ? <span className="text-slate-400 italic font-normal">- forme juridique</span>
@@ -299,45 +285,60 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
     <div className="max-w-3xl mx-auto mt-8">
       {renderProgressBar()}
       <h2 className="text-2xl font-semibold text-slate-900 mb-2">Documents justificatifs</h2>
-      <p className="text-slate-500 mb-8 text-sm">
-        En raison de la nature de votre organisation ({orgType}) ou de vos bénéficiaires, nous avons besoin de documents supplémentaires.
-      </p>
-
-      <div className="space-y-6 mb-8">
-        {orgType === 'Association ou fondation' && (
-          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="font-medium text-slate-900">Statuts de l'association</h3>
-                <p className="text-sm text-slate-500">Copie des statuts datés et signés.</p>
-              </div>
-              <span className="px-2.5 py-1 bg-red-50 text-red-700 text-xs font-medium rounded-full">Requis</span>
-            </div>
-            <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:bg-slate-50 cursor-pointer transition-colors">
-              <FolderPlusIcon className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-              <span className="text-sm text-theme-primary-600 font-medium">Cliquez pour ajouter un fichier</span>
-              <span className="text-sm text-slate-500"> ou glissez-déposez</span>
-            </div>
+      
+      {!requiresDocs ? (
+        <div className="bg-white border border-slate-200 rounded-xl p-12 text-center shadow-sm mb-8">
+          <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircleIcon className="w-8 h-8 text-emerald-500" />
           </div>
-        )}
+          <h3 className="text-lg font-medium text-slate-900 mb-2">Aucun document requis</h3>
+          <p className="text-slate-500">
+            Sur la base des informations fournies, nous n'avons pas besoin de documents supplémentaires pour le moment.
+          </p>
+        </div>
+      ) : (
+        <>
+          <p className="text-slate-500 mb-8 text-sm">
+            En raison de la nature de votre organisation ({orgType}) ou de vos bénéficiaires, nous avons besoin de documents supplémentaires.
+          </p>
 
-        {hasForeignUBO && (
-          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="font-medium text-slate-900">Pièce d'identité (Bénéficiaire étranger)</h3>
-                <p className="text-sm text-slate-500">Passeport ou carte d'identité en cours de validité.</p>
+          <div className="space-y-6 mb-8">
+            {orgType === 'Association ou fondation' && (
+              <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-medium text-slate-900">Statuts de l'association</h3>
+                    <p className="text-sm text-slate-500">Copie des statuts datés et signés.</p>
+                  </div>
+                  <span className="px-2.5 py-1 bg-red-50 text-red-700 text-xs font-medium rounded-full">Requis</span>
+                </div>
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:bg-slate-50 cursor-pointer transition-colors">
+                  <FolderPlusIcon className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                  <span className="text-sm text-theme-primary-600 font-medium">Cliquez pour ajouter un fichier</span>
+                  <span className="text-sm text-slate-500"> ou glissez-déposez</span>
+                </div>
               </div>
-              <span className="px-2.5 py-1 bg-red-50 text-red-700 text-xs font-medium rounded-full">Requis</span>
-            </div>
-            <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:bg-slate-50 cursor-pointer transition-colors">
-              <FolderPlusIcon className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-              <span className="text-sm text-theme-primary-600 font-medium">Cliquez pour ajouter un fichier</span>
-              <span className="text-sm text-slate-500"> ou glissez-déposez</span>
-            </div>
+            )}
+
+            {hasForeignUBO && (
+              <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-medium text-slate-900">Pièce d'identité (Bénéficiaire étranger)</h3>
+                    <p className="text-sm text-slate-500">Passeport ou carte d'identité en cours de validité.</p>
+                  </div>
+                  <span className="px-2.5 py-1 bg-red-50 text-red-700 text-xs font-medium rounded-full">Requis</span>
+                </div>
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:bg-slate-50 cursor-pointer transition-colors">
+                  <FolderPlusIcon className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                  <span className="text-sm text-theme-primary-600 font-medium">Cliquez pour ajouter un fichier</span>
+                  <span className="text-sm text-slate-500"> ou glissez-déposez</span>
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      )}
 
       <div className="flex justify-start gap-4">
         <button onClick={handlePrev} className="px-6 py-2.5 bg-white border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors">
@@ -353,16 +354,53 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
   const renderEmail = () => (
     <div className="max-w-3xl mx-auto mt-8">
       {renderProgressBar()}
-      <h2 className="text-2xl font-semibold text-slate-900 mb-2">Contact du titulaire</h2>
-      <p className="text-slate-500 mb-8 text-sm">Veuillez renseigner l'adresse e-mail du représentant légal qui signera le contrat.</p>
+      <h2 className="text-2xl font-semibold text-slate-900 mb-2">Identification du titulaire</h2>
+      <p className="text-slate-500 mb-8 text-sm">Veuillez renseigner vos informations personnelles en tant que titulaire du compte.</p>
 
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
-        <label className="block text-sm font-medium text-slate-700 mb-2">Adresse e-mail</label>
-        <input 
-          type="email" 
-          defaultValue="emilien@inqom.com"
-          className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-theme-primary-500 focus:border-theme-primary-500 outline-none text-lg"
-        />
+        <div className="mb-8">
+          <label className="block text-sm font-medium text-slate-700 mb-3">Êtes-vous un représentant légal ?</label>
+          <div className="flex gap-8">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="legalRep" className="w-4 h-4 text-theme-primary-600 focus:ring-theme-primary-500" defaultChecked />
+              <span className="text-slate-700">Oui</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="legalRep" className="w-4 h-4 text-theme-primary-600 focus:ring-theme-primary-500" />
+              <span className="text-slate-700">Non, mais j'ai une procuration</span>
+            </label>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-slate-700 mb-2">Adresse e-mail</label>
+          <input 
+            type="email" 
+            defaultValue="emilien@inqom.com"
+            className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-theme-primary-500 focus:border-theme-primary-500 outline-none"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-slate-700 mb-2">Adresse postale personnelle</label>
+          <input 
+            type="text" 
+            placeholder="Numéro et nom de rue"
+            className="w-full border border-slate-300 rounded-lg px-4 py-2.5 mb-3 focus:ring-2 focus:ring-theme-primary-500 focus:border-theme-primary-500 outline-none"
+          />
+          <div className="grid grid-cols-2 gap-6">
+            <input 
+              type="text" 
+              placeholder="Code postal"
+              className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-theme-primary-500 focus:border-theme-primary-500 outline-none"
+            />
+            <input 
+              type="text" 
+              placeholder="Ville"
+              className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-theme-primary-500 focus:border-theme-primary-500 outline-none"
+            />
+          </div>
+        </div>
       </div>
 
       <div className="flex justify-start gap-4">
@@ -434,6 +472,10 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
     </div>
   );
 
+  if (currentStep.id === 'kyc') {
+    return renderKyc();
+  }
+
   return (
     <div className="fixed inset-0 z-[100] bg-slate-50 flex flex-col">
       <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-sm">
@@ -449,12 +491,11 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
       
       <div className="flex-1 overflow-y-auto pb-24">
         {currentStep.id === 'intro' && renderIntro()}
+        {currentStep.id === 'email' && renderEmail()}
         {currentStep.id === 'org' && renderOrg()}
         {currentStep.id === 'ubo' && renderUbo()}
         {currentStep.id === 'docs' && renderDocs()}
-        {currentStep.id === 'email' && renderEmail()}
         {currentStep.id === 'id' && renderId()}
-        {currentStep.id === 'kyc' && renderKyc()}
       </div>
 
       <UboModal 
