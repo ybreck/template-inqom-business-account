@@ -26,11 +26,11 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
 
   const flow = [
     { id: 'intro' },
-    { id: 'email', title: 'Identification', icon: EnvelopeIcon },
-    { id: 'org', title: 'Organisation', icon: DocumentTextIcon },
-    { id: 'ubo', title: 'Titularité', icon: UserGroupIcon },
-    { id: 'docs', title: 'Documents', icon: FolderPlusIcon },
-    { id: 'id', title: 'Vérification', icon: InformationCircleIcon },
+    { id: 'email', title: 'Identification', description: 'Vos informations personnelles', icon: EnvelopeIcon },
+    { id: 'org', title: 'Organisation', description: 'Détails de votre entreprise', icon: DocumentTextIcon },
+    { id: 'ubo', title: 'Titularité', description: 'Déclaration des bénéficiaires', icon: UserGroupIcon },
+    { id: 'docs', title: 'Documents', description: 'Pièces justificatives', icon: FolderPlusIcon },
+    { id: 'id', title: 'Vérification', description: 'Vérification d\'identité', icon: InformationCircleIcon },
     { id: 'kyc' }
   ];
 
@@ -51,7 +51,7 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
   };
 
   const renderProgressBar = () => {
-    if (currentStep.id === 'intro' || currentStep.id === 'kyc') return null;
+    if (currentStep.id === 'kyc') return null;
     
     return (
       <div className="flex border-b border-slate-200 mb-8">
@@ -74,8 +74,11 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
   };
 
   const renderIntro = () => (
-    <div className="max-w-5xl mx-auto mt-12">
-      <h2 className="text-3xl font-semibold text-slate-900 mb-2 text-center">Merci ! Plus que {visualSteps.length} étapes.</h2>
+    <div className="max-w-5xl mx-auto mt-8">
+      <div className="max-w-3xl mx-auto">
+        {renderProgressBar()}
+      </div>
+      <h2 className="text-3xl font-semibold text-slate-900 mb-2 text-center mt-8">Créez votre compte pro en 5 étapes</h2>
       <p className="text-slate-500 mb-16 text-center">Nous allons vous aider à créer votre compte. Il vous suffit de suivre quelques étapes qui ne devraient pas prendre plus de 5 minutes.</p>
 
       <div className="flex justify-between items-start relative mb-16 px-8">
@@ -88,6 +91,11 @@ export const ProAccountOnboarding: React.FC<ProAccountOnboardingProps> = ({ onCo
             <p className={`text-sm font-medium text-center px-2 ${idx === 0 ? 'text-slate-900' : 'text-slate-500'}`}>
               {idx + 1}. {s.title}
             </p>
+            {s.description && (
+              <p className="text-xs text-slate-500 text-center px-2 mt-1">
+                {s.description}
+              </p>
+            )}
           </div>
         ))}
       </div>
