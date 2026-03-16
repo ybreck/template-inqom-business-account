@@ -34,37 +34,87 @@ import {
 import { QuestionMarkCircleIcon, CreditCardIcon } from '../../constants/icons'; 
 
 
+import { mockNotifications, addNotification } from '../../data/notifications';
+
 const ProAccountMainPage: React.FC<ModuleComponentProps> = ({ onSubNavigate, activeSubPageId, onMainNavigate }) => {
   const [isActivated, setIsActivated] = useState(false);
-  const [isOnboarding, setIsOnboarding] = useState(false);
+  const [savedStepIndex, setSavedStepIndex] = useState(() => {
+    const saved = localStorage.getItem('proAccountOnboardingStep');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  const [isOnboarding, setIsOnboarding] = useState(() => {
+    const saved = localStorage.getItem('proAccountOnboardingStep');
+    return saved && parseInt(saved, 10) === 6 ? true : false;
+  });
+  const [hasStartedOnboarding, setHasStartedOnboarding] = useState(() => {
+    return localStorage.getItem('proAccountOnboardingStarted') === 'true' || 
+           mockNotifications.some(n => n.type === 'pro_account_onboarding' && n.status === 'pending');
+  });
 
   if (isOnboarding) {
     return (
       <ProAccountOnboarding 
+        initialStep={hasStartedOnboarding ? savedStepIndex : 0}
         onComplete={() => {
           setIsOnboarding(false);
           setIsActivated(true);
+          localStorage.removeItem('proAccountOnboardingStarted');
+          localStorage.removeItem('proAccountOnboardingStep');
+          // Optional: mark notification as archived if we had a function for it
         }}
-        onCancel={() => setIsOnboarding(false)}
+        onCancel={(stepIndex) => {
+          setIsOnboarding(false);
+          setHasStartedOnboarding(true);
+          setSavedStepIndex(stepIndex);
+          localStorage.setItem('proAccountOnboardingStarted', 'true');
+          localStorage.setItem('proAccountOnboardingStep', stepIndex.toString());
+          addNotification({
+            id: 'notif-pro-account-resume',
+            type: 'pro_account_onboarding',
+            title: 'Finalisez l\'ouverture de votre Compte Pro',
+            description: 'Vous avez commencé l\'activation de votre Compte Pro. Reprenez là où vous vous étiez arrêté pour finaliser l\'ouverture.',
+            status: 'pending',
+            timestamp: new Date().toISOString(),
+            relatedData: {},
+            urgent: true,
+          });
+        }}
       />
     );
   }
 
   if (!isActivated) {
     return (
-      <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-white rounded-xl shadow-sm border border-slate-200 m-6">
+      <div className="relative flex flex-col items-center justify-center h-full p-8 text-center bg-white rounded-xl shadow-sm border border-slate-200 m-6">
+        {hasStartedOnboarding && (
+          <button
+            onClick={() => {
+              localStorage.removeItem('proAccountOnboardingStarted');
+              localStorage.removeItem('proAccountOnboardingStep');
+              setHasStartedOnboarding(false);
+              setSavedStepIndex(0);
+            }}
+            className="absolute top-4 right-4 px-4 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+          >
+            Réinitialiser
+          </button>
+        )}
         <div className="w-24 h-24 bg-theme-primary-50 rounded-full flex items-center justify-center mb-6">
           <CreditCardIcon className="w-12 h-12 text-theme-primary-600" />
         </div>
-        <h2 className="text-3xl font-semibold text-slate-900 mb-4">Activez votre Compte Pro</h2>
+        <h2 className="text-3xl font-semibold text-slate-900 mb-4">
+          {hasStartedOnboarding ? "Reprendre l'activation" : "Activez votre Compte Pro"}
+        </h2>
         <p className="text-slate-600 max-w-lg mb-8 text-lg">
-          Gérez vos finances, effectuez des virements et suivez vos dépenses en temps réel avec le Compte Pro Inqom.
+          {hasStartedOnboarding 
+            ? "Vous avez commencé l'activation de votre Compte Pro. Reprenez là où vous vous étiez arrêté pour finaliser l'ouverture." 
+            : "Gérez vos finances, effectuez des virements et suivez vos dépenses en temps réel avec le Compte Pro Inqom."}
         </p>
         <button
           onClick={() => setIsOnboarding(true)}
           className="px-8 py-3 bg-theme-primary-600 text-white font-medium rounded-lg hover:bg-theme-primary-700 transition-colors shadow-sm text-lg"
         >
-          Activer mon Compte Pro
+          {hasStartedOnboarding ? "Reprendre l'activation" : "Activer mon Compte Pro"}
         </button>
       </div>
     );

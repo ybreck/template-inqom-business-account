@@ -9,6 +9,7 @@ import {
     ExclamationTriangleIcon,
     ChatBubbleLeftEllipsisIcon,
     EnvelopeIcon,
+    BuildingLibraryIcon,
 } from '../../constants/icons';
 
 const formatCurrency = (amount?: number | string) => {
@@ -31,6 +32,8 @@ const ActionIcon: React.FC<{ type: NotificationItem['type'] }> = ({ type }) => {
       return <ChatBubbleLeftEllipsisIcon className={`${baseClass} text-green-600`} />;
     case 'approval_request':
         return <BellIcon className={`${baseClass} text-purple-600`} />;
+    case 'pro_account_onboarding':
+        return <BuildingLibraryIcon className={`${baseClass} text-theme-primary-600`} />;
     default:
       return <BellIcon className={`${baseClass} text-gray-600`} />;
   }
@@ -244,6 +247,17 @@ const ActionsAFairePage: React.FC<ModuleComponentProps> = ({ activeSubPageId, on
                                 }
                             }} className="w-full px-5 py-2.5 text-sm font-medium text-white bg-theme-primary-500 rounded-lg hover:bg-theme-primary-600">
                                 Répondre au message
+                            </button>
+                        )}
+
+                        {selectedItem.type === 'pro_account_onboarding' && (
+                            <button onClick={() => {
+                                if (onMainNavigate) {
+                                    onMainNavigate('compte_pro');
+                                    archiveItem(selectedItem.id);
+                                }
+                            }} className="w-full px-5 py-2.5 text-sm font-medium text-white bg-theme-primary-500 rounded-lg hover:bg-theme-primary-600">
+                                Reprendre l'activation
                             </button>
                         )}
                         {selectedItem.type === 'approval_request' && (

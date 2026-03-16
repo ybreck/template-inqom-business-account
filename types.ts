@@ -464,7 +464,8 @@ export type NotificationType =
   | 'invoice_received_supplier'
   | 'missing_document'
   | 'approval_request'
-  | 'message';
+  | 'message'
+  | 'pro_account_onboarding';
 
 export interface NotificationItem {
   id: string;

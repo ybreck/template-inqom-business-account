@@ -74,3 +74,9 @@ export const mockNotifications: NotificationItem[] = [
     urgent: true,
   },
 ];
+
+export const addNotification = (notification: NotificationItem) => {
+  if (!mockNotifications.some(n => n.id === notification.id)) {
+    mockNotifications.unshift(notification);
+  }
+};

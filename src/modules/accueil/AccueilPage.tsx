@@ -27,6 +27,8 @@ const ActionIcon: React.FC<{ type: NotificationItem['type'] }> = ({ type }) => {
       return <DocumentMagnifyingGlassIcon className="w-5 h-5 text-orange-600" />;
     case 'message':
       return <ChatBubbleLeftEllipsisIcon className="w-5 h-5 text-green-600" />;
+    case 'pro_account_onboarding':
+      return <BuildingLibraryIcon className="w-5 h-5 text-theme-primary-600" />;
     default:
       return <BellIcon className="w-5 h-5 text-gray-600" />;
   }
@@ -47,6 +49,9 @@ const AccueilPage: React.FC<ModuleComponentProps> = ({ onMainNavigate, onSubNavi
          case 'invoice_received_supplier':
            onMainNavigate('achats');
            onSubNavigate(`supplier_invoice_detail?id=${item.relatedData.invoiceId}`);
+           break;
+         case 'pro_account_onboarding':
+           onMainNavigate('compte_pro');
            break;
          case 'missing_document':
          case 'approval_request':
