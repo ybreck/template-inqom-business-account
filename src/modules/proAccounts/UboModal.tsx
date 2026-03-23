@@ -15,7 +15,10 @@ export const UboModal: React.FC<UboModalProps> = ({ isOpen, onClose, onSave, ini
     lastName: '',
     birthCountry: '🇫🇷 France',
     city: '',
-    role: 'Représentant légal'
+    role: 'Représentant légal',
+    capitalPercentage: '',
+    directOwnership: false,
+    indirectOwnership: false
   });
 
   useEffect(() => {
@@ -28,7 +31,10 @@ export const UboModal: React.FC<UboModalProps> = ({ isOpen, onClose, onSave, ini
           lastName: '',
           birthCountry: '🇫🇷 France',
           city: '',
-          role: 'Représentant légal'
+          role: 'Représentant légal',
+          capitalPercentage: '',
+          directOwnership: false,
+          indirectOwnership: false
         });
       }
       setStep(1);
@@ -137,7 +143,7 @@ export const UboModal: React.FC<UboModalProps> = ({ isOpen, onClose, onSave, ini
               </div>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-6">
               <label className="block text-sm font-medium text-slate-700 mb-3">Type de contrôle exercé</label>
               <div className="flex gap-6">
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -172,6 +178,50 @@ export const UboModal: React.FC<UboModalProps> = ({ isOpen, onClose, onSave, ini
                 </label>
               </div>
             </div>
+
+            {formData.role === 'Possession du capital' && (
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Pourcentage total du capital détenu</label>
+                  <div className="relative">
+                    <input 
+                      type="number" 
+                      min="0"
+                      max="100"
+                      value={formData.capitalPercentage || ''}
+                      onChange={(e) => setFormData({...formData, capitalPercentage: e.target.value})}
+                      className="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-theme-primary-500 focus:border-theme-primary-500 outline-none pr-8" 
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      <span className="text-slate-500">%</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-3">Détention du capital</label>
+                  <div className="flex gap-6">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={formData.directOwnership || false}
+                        onChange={(e) => setFormData({...formData, directOwnership: e.target.checked})}
+                        className="w-4 h-4 text-theme-primary-600 rounded focus:ring-theme-primary-500" 
+                      />
+                      <span className="text-slate-700">Directement</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={formData.indirectOwnership || false}
+                        onChange={(e) => setFormData({...formData, indirectOwnership: e.target.checked})}
+                        className="w-4 h-4 text-theme-primary-600 rounded focus:ring-theme-primary-500" 
+                      />
+                      <span className="text-slate-700">Indirectement</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="flex justify-center gap-2 mb-8">
               <div className="w-1.5 h-1.5 rounded-full bg-slate-500"></div>
