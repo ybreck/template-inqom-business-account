@@ -3,17 +3,18 @@ import React from 'react';
 import { PageConfig } from '../../../types'; // Import root PageConfig
 import ProAccountMainPage from './ProAccountMainPage';
 import ProAccountOverviewPage from './ProAccountOverviewPage';
+import ProAccountAccountPage from './ProAccountAccountPage'; // Import new Account Page
 import ProAccountTransactionsPage from './ProAccountTransactionsPage';
 // ProAccountTransfersHubPage is removed
 import ProAccountTransferListPage from './ProAccountTransferListPage'; // Page for listing transfers
 import ProAccountTransfersPage from './ProAccountTransfersPage'; // Form for new transfer
 import ProAccountBeneficiaryListPage from './ProAccountBeneficiaryListPage'; 
-import ProAccountAddEditBeneficiaryPage from './ProAccountAddEditBeneficiaryPage'; 
 import ProAccountDirectDebitsPage from './ProAccountDirectDebitsPage';
 import ProAccountCreateMandatePage from './ProAccountCreateMandatePage'; // Import the new page component
 import ProAccountCardsPage from './ProAccountCardsPage'; // Import new Cards Page
 import ProAccountAddCardPage from './ProAccountAddCardPage'; // Import new Add Card Page
 import ProAccountCardTransactionsPage from './ProAccountCardTransactionsPage'; // Import new Card Transactions Page
+import ProAccountMembersPage from './ProAccountMembersPage'; // Import Members Page
 
 
 import { 
@@ -36,12 +37,12 @@ export const proAccountOverviewConfig: PageConfig = {
   description: "Vue d'ensemble de votre compte professionnel, solde et opérations récentes."
 };
 
-export const proAccountTransactionsConfig: PageConfig = {
-  id: 'comptes_pro_operations',
-  title: 'Opérations',
-  icon: ClipboardDocumentListIcon,
-  component: ProAccountTransactionsPage, 
-  description: "Consultez l'historique détaillé de vos transactions."
+export const proAccountAccountConfig: PageConfig = {
+  id: 'comptes_pro_compte',
+  title: 'Compte',
+  icon: ClipboardDocumentListIcon, // Using an existing icon
+  component: ProAccountAccountPage,
+  description: "Détails de votre compte bancaire et téléchargement du RIB."
 };
 
 export const proAccountTransferListConfig: PageConfig = {
@@ -68,31 +69,6 @@ export const proAccountBeneficiaryListConfig: PageConfig = {
   description: "Gérez votre liste de bénéficiaires pour les virements."
 };
 
-export const proAccountAddEditBeneficiaryFormConfig: PageConfig = {
-  id: 'comptes_pro_beneficiaire_form', 
-  title: 'Gestion Bénéficiaire', 
-  icon: UserGroupIcon,
-  component: ProAccountAddEditBeneficiaryPage,
-  description: "Ajoutez ou modifiez un bénéficiaire."
-};
-
-export const proAccountDirectDebitsConfig: PageConfig = {
-  id: 'comptes_pro_prelevements',
-  title: 'Prélèvements',
-  icon: ArrowPathIcon,
-  component: ProAccountDirectDebitsPage, 
-  description: "Gérez vos mandats de prélèvements SEPA."
-};
-
-export const proAccountCreateMandateConfig: PageConfig = {
-  id: 'comptes_pro_prelevements_creer',
-  title: 'Créer un Mandat',
-  icon: DocumentPlusIcon, // Using DocumentPlusIcon from global constants
-  component: ProAccountCreateMandatePage,
-  description: "Créez un nouveau mandat de prélèvement SEPA."
-};
-
-
 export const proAccountCardsConfig: PageConfig = {
   id: 'comptes_pro_cartes',
   title: 'Cartes',
@@ -115,4 +91,12 @@ export const proAccountCardTransactionsConfig: PageConfig = {
   icon: ClipboardDocumentListIcon,
   component: ProAccountCardTransactionsPage,
   description: "Consultez les transactions d'une carte spécifique."
+};
+
+export const proAccountMembersConfig: PageConfig = {
+  id: 'comptes_pro_membres',
+  title: 'Membres',
+  icon: UserGroupIcon,
+  component: ProAccountMembersPage,
+  description: "Gérez les membres et leurs permissions sur le compte pro."
 };

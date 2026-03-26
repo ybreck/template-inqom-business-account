@@ -18,8 +18,7 @@ import { achatsModuleConfig } from './src/modules/achats/config';
 import { gestionDocModuleConfig } from './src/modules/gestionDocumentaire/config';
 import { 
   proAccountsMainConfig, 
-  proAccountNewTransferFormConfig,
-  proAccountAddEditBeneficiaryFormConfig
+  proAccountNewTransferFormConfig
 } from './src/modules/proAccounts/config';
 import { bankPageConfig } from './src/modules/bank/config';
 import { pilotageModuleConfig } from './src/modules/pilotage/config';
@@ -133,9 +132,10 @@ const baseSidebarNavigationStructure: AppSpecificNavItem[] = [
       { id: 'comptes_pro_synthese', name: 'Synthèse', icon: <PresentationChartLineIcon /> },
       { id: 'comptes_pro_operations', name: 'Opérations', icon: <ClipboardDocumentListIcon /> },
       { id: 'comptes_pro_virements', name: 'Virements', icon: <ArrowsRightLeftIcon /> },
+      { id: 'comptes_pro_beneficiaires_liste', name: 'Bénéficiaires', icon: <UserGroupIcon /> },
       { id: 'comptes_pro_prelevements', name: 'Prélèvements', icon: <ArrowPathIcon /> },
       { id: 'comptes_pro_cartes', name: 'Cartes', icon: <CreditCardIcon /> },
-      { id: 'comptes_pro_beneficiaires_liste', name: 'Bénéficiaires', icon: <UserGroupIcon /> },
+      { id: 'comptes_pro_membres', name: 'Membres', icon: <UserGroupIcon /> },
     ]
   },
   {
@@ -170,7 +170,6 @@ const pageComponentRegistry: Record<string, AppSpecificPageConfig> = {
   'parametres': parametresConfig,
   
   'comptes_pro_virements_nouveau': proAccountNewTransferFormConfig,
-  'comptes_pro_beneficiaire_form': proAccountAddEditBeneficiaryFormConfig, 
 
   'facturation_electronique_pa': paMarketingPageConfig,
   

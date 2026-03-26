@@ -5,6 +5,14 @@ export interface ProAccountDetails {
   accountId: string;
   accountName: string;
   iban: string;
+  bic?: string;
+  accountHolder?: string;
+  address?: {
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  };
   balance: number;
   currency: string;
   overdraftLimit?: number;
@@ -46,6 +54,7 @@ export interface Beneficiary {
   iban: string;
   bankName?: string; // Optional
   addedDate: string; // YYYY-MM-DD
+  isFavorite?: boolean;
 }
 
 // Form data for creating/editing a beneficiary

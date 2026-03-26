@@ -3,7 +3,15 @@ import { ProAccountDetails, ProAccountTransaction, Beneficiary, DirectDebitManda
 export const mockProAccountDetails: ProAccountDetails = {
   accountId: 'COGPRO001',
   accountName: 'Compte Pro Principal',
-  iban: 'FR7630006000011234567890188',
+  iban: 'FR76 9999 9001 0026 0690 2389 781',
+  bic: 'SWNBFR22',
+  accountHolder: 'Yann Breck',
+  address: {
+    street: '10 rue de Paris',
+    city: 'Paris',
+    postalCode: '75000',
+    country: 'France'
+  },
   balance: 15730.45,
   currency: 'EUR',
   overdraftLimit: 2000,
@@ -346,9 +354,9 @@ export const mockProAccountTransactions: ProAccountTransaction[] = [
 
 
 export const mockBeneficiaries: Beneficiary[] = [
-  { id: 'ben001', name: 'Fournisseur A SAS', iban: 'FR7612345678901234567890123', bankName: 'BNP Paribas', addedDate: '2023-01-15' },
-  { id: 'ben002', name: 'Employé Jean Dupont', iban: 'FR7698765432109876543210987', bankName: 'Société Générale', addedDate: '2023-02-20' },
-  { id: 'ben003', name: 'URSSAF', iban: 'FR7611112222333344445555666', addedDate: '2022-11-10' },
+  { id: 'ben001', name: 'Fournisseur A SAS', iban: 'FR7612345678901234567890123', bankName: 'BNP Paribas', addedDate: '2023-01-15', isFavorite: true },
+  { id: 'ben002', name: 'Employé Jean Dupont', iban: 'FR7698765432109876543210987', bankName: 'Société Générale', addedDate: '2023-02-20', isFavorite: false },
+  { id: 'ben003', name: 'URSSAF', iban: 'FR7611112222333344445555666', addedDate: '2022-11-10', isFavorite: false },
 ];
 
 export const mockDirectDebitMandates: DirectDebitMandate[] = [
@@ -414,7 +422,7 @@ export const mockPaymentCards: PaymentCard[] = [
     id: 'card001', 
     type: 'Physique', 
     last4Digits: '1234', 
-    cardholderName: 'Marcel GENIALLY', 
+    cardholderName: 'Yann Breck', 
     expiryDate: '12/26', 
     status: 'Active', 
     isContactlessEnabled: true, 

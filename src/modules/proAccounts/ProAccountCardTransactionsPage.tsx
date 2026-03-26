@@ -65,9 +65,13 @@ const ProAccountCardTransactionsPage: React.FC<ModuleComponentProps> = ({ active
             <CreditCardIcon className="w-8 h-8 text-dbf-blue-primary-500 mr-3" />
             <div>
                 <h2 className="text-xl font-semibold text-dbf-text">
-                    Transactions de la Carte : {cardDetails.cardholderName} (•••• {cardDetails.last4Digits})
+                    Transactions de la Carte (•••• {cardDetails.last4Digits})
                 </h2>
-                <p className="text-xs text-gray-500">Associée à l'IBAN : {cardDetails.associatedAccountIban}</p>
+                <div className="mt-2 flex flex-col gap-1 text-sm text-gray-600">
+                  <p><span className="font-medium">Titulaire :</span> {cardDetails.cardholderName}</p>
+                  <p><span className="font-medium">Type :</span> {cardDetails.type}</p>
+                  <p><span className="font-medium">Associée à l'IBAN :</span> {cardDetails.associatedAccountIban}</p>
+                </div>
             </div>
         </div>
         {/* Add filters for card transactions if needed */}

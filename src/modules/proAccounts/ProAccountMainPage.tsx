@@ -4,13 +4,9 @@ import { ModuleComponentProps } from './types';
 import ModuleTabs from '../../../components/ModuleTabs'; 
 import PlaceholderPage from '../../../components/PlaceholderPage'; 
 import ProAccountOverviewPage from './ProAccountOverviewPage';
-import ProAccountTransactionsPage from './ProAccountTransactionsPage';
 import ProAccountTransferListPage from './ProAccountTransferListPage';
 import ProAccountTransfersPage from './ProAccountTransfersPage'; 
 import ProAccountBeneficiaryListPage from './ProAccountBeneficiaryListPage'; 
-import ProAccountAddEditBeneficiaryPage from './ProAccountAddEditBeneficiaryPage'; 
-import ProAccountDirectDebitsPage from './ProAccountDirectDebitsPage';
-import ProAccountCreateMandatePage from './ProAccountCreateMandatePage'; // Import Create Mandate Page
 import ProAccountCardsPage from './ProAccountCardsPage'; // Import Cards Page
 import ProAccountAddCardPage from './ProAccountAddCardPage'; // Import Add Card Page
 import ProAccountCardTransactionsPage from './ProAccountCardTransactionsPage'; // Import Card Transactions Page
@@ -19,16 +15,14 @@ import { ProAccountOnboarding } from './ProAccountOnboarding';
 
 import {
   proAccountOverviewConfig,
-  proAccountTransactionsConfig,
+  proAccountAccountConfig,
   proAccountTransferListConfig,
   proAccountNewTransferFormConfig, 
-  proAccountDirectDebitsConfig,
-  proAccountCreateMandateConfig, // Import Create Mandate Config
   proAccountCardsConfig,
   proAccountAddCardConfig, // Import Add Card Config
   proAccountCardTransactionsConfig, // Import Card Transactions Config
   proAccountBeneficiaryListConfig,
-  proAccountAddEditBeneficiaryFormConfig 
+  proAccountMembersConfig
 } from './config';
 
 import { QuestionMarkCircleIcon, CreditCardIcon } from '../../constants/icons'; 
@@ -122,11 +116,11 @@ const ProAccountMainPage: React.FC<ModuleComponentProps> = ({ onSubNavigate, act
   
   const baseTabConfigs = [
     proAccountOverviewConfig,
-    proAccountTransactionsConfig,
-    proAccountTransferListConfig, 
-    proAccountDirectDebitsConfig, // Parent of Create Mandate
+    proAccountAccountConfig,
     proAccountCardsConfig, // Parent of Add Card and Card Transactions
-    proAccountBeneficiaryListConfig 
+    proAccountTransferListConfig,
+    proAccountBeneficiaryListConfig,
+    proAccountMembersConfig,
   ];
 
   const baseTabsMapped = baseTabConfigs.map(config => ({
@@ -138,38 +132,8 @@ const ProAccountMainPage: React.FC<ModuleComponentProps> = ({ onSubNavigate, act
   let finalTabsToDisplay = [...baseTabsMapped];
   let tabIdToHighlightInModuleTabs = activeSubPageId;
 
-  // Dynamically add "Nouveau Virement" tab
-  if (activeSubPageId === proAccountNewTransferFormConfig.id) {
-    const newTransferDynamicTab = {
-      id: proAccountNewTransferFormConfig.id,
-      name: `↳ ${proAccountNewTransferFormConfig.title}`,
-      icon: React.createElement(proAccountNewTransferFormConfig.icon as React.FC<React.SVGProps<SVGSVGElement>>, { className: "w-5 h-5" })
-    };
-    const parentListTabIndex = finalTabsToDisplay.findIndex(tab => tab.id === proAccountTransferListConfig.id);
-    if (parentListTabIndex !== -1) {
-      finalTabsToDisplay.splice(parentListTabIndex + 1, 0, newTransferDynamicTab);
-    } else {
-      finalTabsToDisplay.push(newTransferDynamicTab);
-    }
-    tabIdToHighlightInModuleTabs = proAccountNewTransferFormConfig.id;
-  }
-  // Dynamically add "Créer Mandat" tab
-  else if (activeSubPageId === proAccountCreateMandateConfig.id) {
-    const createMandateDynamicTab = {
-      id: proAccountCreateMandateConfig.id,
-      name: `↳ ${proAccountCreateMandateConfig.title}`,
-      icon: React.createElement(proAccountCreateMandateConfig.icon as React.FC<React.SVGProps<SVGSVGElement>>, { className: "w-5 h-5" })
-    };
-    const parentDirectDebitsTabIndex = finalTabsToDisplay.findIndex(tab => tab.id === proAccountDirectDebitsConfig.id);
-    if (parentDirectDebitsTabIndex !== -1) {
-      finalTabsToDisplay.splice(parentDirectDebitsTabIndex + 1, 0, createMandateDynamicTab);
-    } else {
-      finalTabsToDisplay.push(createMandateDynamicTab);
-    }
-    tabIdToHighlightInModuleTabs = proAccountCreateMandateConfig.id;
-  }
   // Dynamically add "Ajouter une Carte" tab
-  else if (activeSubPageId === proAccountAddCardConfig.id) {
+  if (activeSubPageId === proAccountAddCardConfig.id) {
     const addCardDynamicTab = {
         id: proAccountAddCardConfig.id,
         name: `↳ ${proAccountAddCardConfig.title}`,
@@ -199,10 +163,6 @@ const ProAccountMainPage: React.FC<ModuleComponentProps> = ({ onSubNavigate, act
      }
      tabIdToHighlightInModuleTabs = activeSubPageId; // Highlight the specific transaction tab
   }
-  // Highlight parent tab for "Add/Edit Beneficiary" form
-  else if (activeSubPageId === proAccountAddEditBeneficiaryFormConfig.id) {
-    tabIdToHighlightInModuleTabs = proAccountBeneficiaryListConfig.id;
-  }
   // Default highlight if activeSubPageId is not a main tab or handled form
   else if (!baseTabConfigs.some(config => config.id === activeSubPageId)) {
     // If activeSubPageId is something like "comptes_pro_carte_transactions?cardId=xxx" but not yet added dynamically (e.g. initial load)
@@ -226,16 +186,10 @@ const ProAccountMainPage: React.FC<ModuleComponentProps> = ({ onSubNavigate, act
     switch (activeSubPageId) {
       case proAccountOverviewConfig.id:
         return <ProAccountOverviewPage {...propsForSubPages} />;
-      case proAccountTransactionsConfig.id:
-        return <ProAccountTransactionsPage />; 
+      case proAccountAccountConfig.id:
+        return <proAccountAccountConfig.component {...propsForSubPages} />;
       case proAccountTransferListConfig.id:
         return <ProAccountTransferListPage {...propsForSubPages} />;
-      case proAccountNewTransferFormConfig.id: 
-        return <ProAccountTransfersPage {...propsForSubPages} />;
-      case proAccountDirectDebitsConfig.id:
-        return <ProAccountDirectDebitsPage {...propsForSubPages} />;
-      case proAccountCreateMandateConfig.id: // Content for create mandate form
-        return <ProAccountCreateMandatePage {...propsForSubPages} />;
       case proAccountCardsConfig.id:
         return <ProAccountCardsPage {...propsForSubPages} />;
       case proAccountAddCardConfig.id:
@@ -243,8 +197,6 @@ const ProAccountMainPage: React.FC<ModuleComponentProps> = ({ onSubNavigate, act
       // CardTransactions handled above
       case proAccountBeneficiaryListConfig.id: 
         return <ProAccountBeneficiaryListPage {...propsForSubPages} />;
-      case proAccountAddEditBeneficiaryFormConfig.id: 
-        return <ProAccountAddEditBeneficiaryPage {...propsForSubPages} />;
       default:
         const currentConfig = baseTabConfigs.find(conf => conf.id === activeSubPageId);
         if (currentConfig && currentConfig.component) {

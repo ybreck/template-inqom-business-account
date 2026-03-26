@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ModuleComponentProps, ProAccountTransaction } from './types';
 import { mockProAccountTransactions, mockProAccountDetails } from './data';
 import { PlusCircleIcon, ArrowsRightLeftIcon } from '../../../src/constants/icons';
+import TransactionDetailsPanel from './TransactionDetailsPanel';
+import NewTransferModal from './NewTransferModal';
 
 const formatCurrency = (amount: number, currency: string = 'EUR') => {
   return amount.toLocaleString('fr-FR', { style: 'currency', currency });
@@ -18,20 +20,22 @@ const formatDate = (dateString?: string) => {
 };
 
 const ProAccountTransferListPage: React.FC<ModuleComponentProps> = ({ onSubNavigate }) => {
+  const [selectedTransaction, setSelectedTransaction] = useState<ProAccountTransaction | null>(null);
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+
   // Filter for outgoing transfers and sort by date
   const outgoingTransfers = mockProAccountTransactions
     .filter(tx => tx.type === 'Virement sortant' || (tx.type === 'Paiement par carte' && tx.amount < 0)) // Example: include card payments as "sortant"
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const handleNewTransfer = () => {
-    if (onSubNavigate) {
-      onSubNavigate('comptes_pro_virements_nouveau');
-    }
+    setIsTransferModalOpen(true);
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="flex items-start">
+      <div className="flex-1 min-w-0 space-y-6">
+        <div className="flex justify-between items-center">
         <h3 className="text-xl font-semibold text-theme-text">Historique des Virements Émis</h3>
         <button
           onClick={handleNewTransfer}
@@ -62,7 +66,11 @@ const ProAccountTransferListPage: React.FC<ModuleComponentProps> = ({ onSubNavig
                 else if (tx.status === 'Annulé' || tx.status === 'Rejeté') statusBadgeStyle = 'bg-red-100 text-red-700';
                 
                 return (
-                  <tr key={tx.id} className="hover:bg-slate-50 transition-colors duration-150">
+                  <tr 
+                    key={tx.id} 
+                    className="hover:bg-slate-50 transition-colors duration-150 cursor-pointer"
+                    onClick={() => setSelectedTransaction(tx)}
+                  >
                     <td className="px-4 py-3 whitespace-nowrap text-xs text-gray-500">{formatDate(tx.date)}</td>
                     <td className="px-4 py-3 text-xs text-theme-text">
                       <p className="font-medium truncate w-60" title={tx.thirdPartyName || tx.description}>{tx.thirdPartyName || tx.description}</p>
@@ -86,6 +94,18 @@ const ProAccountTransferListPage: React.FC<ModuleComponentProps> = ({ onSubNavig
           <p className="py-10 text-center text-sm text-gray-500">Aucun virement émis à afficher.</p>
         )}
       </div>
+      </div>
+
+      <TransactionDetailsPanel 
+        transaction={selectedTransaction} 
+        onClose={() => setSelectedTransaction(null)} 
+        isTransfer={true}
+      />
+
+      <NewTransferModal 
+        isOpen={isTransferModalOpen} 
+        onClose={() => setIsTransferModalOpen(false)} 
+      />
     </div>
   );
 };
